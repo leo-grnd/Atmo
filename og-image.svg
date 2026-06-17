@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" font-family="'Archivo Black', sans-serif">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#ff6b00" stop-opacity="0.18"/>
+      <stop offset="60%" stop-color="#ff6b00" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0 H0 V60" fill="none" stroke="#222" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.35"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <g fill="none" stroke="#ff6b00" stroke-width="10" stroke-linecap="round" transform="translate(96 150)">
+    <path d="M0 18 H150 a26 26 0 1 0 -26 -26"/>
+    <path d="M0 58 H210 a22 22 0 1 1 -22 22"/>
+    <path d="M0 98 H110 a18 18 0 1 1 -18 18"/>
+  </g>
+
+  <text x="96" y="430" font-size="150" letter-spacing="-6" fill="#f5f1e8">ATM<tspan fill="#ff6b00">O</tspan></text>
+  <text x="100" y="495" font-family="'JetBrains Mono', monospace" font-size="30" letter-spacing="6" fill="#8a8278">QUALITÉ DE L'AIR · UV · POLLEN — TEMPS RÉEL</text>
+  <text x="100" y="548" font-family="'JetBrains Mono', monospace" font-size="24" fill="#8a8278">Indice européen, polluants &amp; prévision 3 jours — sans clé, sans compte.</text>
+</svg>

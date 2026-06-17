@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATMO — Qualité de l'air, UV & pollen près de chez vous</title>
+    <meta name="description" content="La qualité de l'air en temps réel près de chez vous : indice européen, indice UV, pollens, détail des polluants (PM2.5, NO₂, O₃…) et prévision sur 3 jours. Gratuit, sans pub, sans compte.">
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f1e8" media="(prefers-color-scheme: light)">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ATMO — Qualité de l'air près de chez vous">
+    <meta property="og:description" content="Indice de qualité de l'air, UV et pollens en temps réel, avec conseils santé.">
+    <meta property="og:image" content="og-image.svg">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="manifest" href="manifest.webmanifest">
+
+    <!-- Applique le thème enregistré avant le premier rendu (évite le flash). -->
+    <script>(function(){try{var t=localStorage.getItem('atmo-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <div class="logo">ATM<span>O</span></div>
+                <div class="tagline">— Qualité de l'air · Temps réel</div>
+            </div>
+            <div class="meta">
+                <div class="meta-right">
+                    <a class="nav-link" href="comment-ca-marche.html">Comment ça marche →</a>
+                    <div id="status" data-state="cache"><span class="pulse" aria-hidden="true"></span>Open-Meteo</div>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème" title="Changer de thème">
+                        <span id="themeIcon" aria-hidden="true">☾</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <h1>La qualité de l'air<br /><em>près de chez vous.</em></h1>
+            <p>Indice européen, indice UV, pollens et détail des polluants en temps réel — avec un conseil santé clair sur le bon moment pour sortir, aérer ou faire du sport.</p>
+        </section>
+
+        <!-- 0 · Localisation -->
+        <section class="card location-card" aria-label="Localisation">
+            <div class="section-head">→ Votre localisation</div>
+            <div class="loc-controls">
+                <button id="geo-btn" class="geo-btn" type="button">📍 Ma position</button>
+                <div class="search-wrap">
+                    <input id="search-input" class="search-input" type="text" placeholder="Rechercher une ville…" autocomplete="off" aria-label="Rechercher une ville">
+                    <ul id="search-results" class="search-results" role="listbox" hidden></ul>
+                </div>
+                <button id="share-btn" class="share-btn" type="button" hidden>🔗 Partager</button>
+            </div>
+            <div class="place">
+                <span class="place-name" id="place-name">—</span>
+                <span class="place-sub" id="place-sub"></span>
+            </div>
+        </section>
+
+        <!-- 1 · Statut : AQI & UV -->
+        <section class="status-grid" aria-label="Indices du moment">
+            <div class="card index-card aqi-card" id="aqi-card" data-band="inconnu">
+                <div class="index-band" aria-hidden="true"></div>
+                <div class="index-label">Indice de qualité de l'air</div>
+                <div class="index-value" id="aqi-value">—</div>
+                <div class="index-grade" id="aqi-grade">—</div>
+                <div class="index-foot" id="aqi-dominant">—</div>
+            </div>
+
+            <div class="card index-card uv-card" id="uv-card" data-level="inconnu">
+                <div class="index-band" aria-hidden="true"></div>
+                <div class="index-label">Indice UV</div>
+                <div class="index-value" id="uv-value">—</div>
+                <div class="index-grade" id="uv-grade">—</div>
+                <div class="index-foot" id="uv-peak">—</div>
+            </div>
+        </section>
+
+        <!-- 1b · Conditions météo & vent -->
+        <section class="card" id="weather-card" hidden>
+            <div class="section-head">→ Conditions & dispersion du vent</div>
+            <div class="wx-grid">
+                <div class="wx-cell"><div class="wx-lbl">Température</div><div class="wx-val" id="wx-temp">—</div></div>
+                <div class="wx-cell"><div class="wx-lbl">Ressenti</div><div class="wx-val" id="wx-feels">—</div></div>
+                <div class="wx-cell"><div class="wx-lbl">Humidité</div><div class="wx-val" id="wx-hum">—</div></div>
+                <div class="wx-cell"><div class="wx-lbl">Vent</div><div class="wx-val" id="wx-wind">—</div></div>
+            </div>
+            <p class="wx-note" id="wx-note">—</p>
+        </section>
+
+        <!-- 2 · Conseil santé -->
+        <section class="card advice-card" id="advice-card" data-level="neutre" aria-live="polite">
+            <div class="section-head">→ Faut-il sortir, aérer, faire du sport ?</div>
+            <div class="advice-title" id="advice-title">—</div>
+            <p class="advice-detail" id="advice-detail">Choisissez une ville ou activez la localisation pour commencer.</p>
+            <span class="advice-uv" id="advice-uv" hidden></span>
+        </section>
+
+        <!-- 3 · Détail des polluants -->
+        <section class="card">
+            <div class="section-head">→ Détail des polluants</div>
+            <table class="poll-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Polluant</th>
+                        <th scope="col">Concentration</th>
+                        <th scope="col" class="col-band">Sous-indice</th>
+                    </tr>
+                </thead>
+                <tbody id="poll-body"></tbody>
+            </table>
+            <p class="poll-foot">
+                Ligne surlignée = polluant dominant (celui qui porte l'indice global). Concentrations en µg/m³.
+                Indice européen de qualité de l'air (EAQI).
+            </p>
+        </section>
+
+        <!-- 4 · Pollens -->
+        <section class="card" id="pollen-card" hidden>
+            <div class="section-head">→ Risque pollen aujourd'hui</div>
+            <div class="pollen-list" id="pollen-list"></div>
+            <p class="poll-foot">Seuils indicatifs (grains/m³). Données pollen disponibles en Europe, en saison.</p>
+        </section>
+
+        <!-- 4b · Tendance passée 48 h -->
+        <section class="card" id="history-card">
+            <div class="section-head">→ Tendance des dernières 48 h</div>
+            <div class="history-head">
+                <span class="history-verdict" id="history-verdict" data-trend="flat">—</span>
+            </div>
+            <div class="spark-wrap" id="history-spark" aria-label="Évolution de l'indice de qualité de l'air sur 48 heures"></div>
+            <div class="spark-axis"><span id="hist-start">−48 h</span><span>maintenant</span></div>
+        </section>
+
+        <!-- 5 · Prévision -->
+        <section class="card">
+            <div class="section-head">→ Prévision de la qualité de l'air</div>
+            <div class="forecast" id="forecast" role="img" aria-label="Prévision horaire de l'indice de qualité de l'air"></div>
+            <div class="fc-axis"><span>0 h</span><span>6 h</span><span>12 h</span><span>18 h</span><span>24 h</span></div>
+            <div class="cal-legend">
+                <span><span class="swatch" data-band="good" aria-hidden="true"></span>Bon</span>
+                <span><span class="swatch" data-band="fair" aria-hidden="true"></span>Moyen</span>
+                <span><span class="swatch" data-band="moderate" aria-hidden="true"></span>Dégradé</span>
+                <span><span class="swatch" data-band="poor" aria-hidden="true"></span>Mauvais</span>
+                <span><span class="swatch" data-band="verypoor" aria-hidden="true"></span>Très mauvais</span>
+                <span><span class="swatch" data-band="extreme" aria-hidden="true"></span>Extrême</span>
+            </div>
+        </section>
+
+        <footer>
+            Données : <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> (qualité de l'air CAMS, sans clé) ·
+            recherche & localisation : Open-Meteo / <a href="https://www.bigdatacloud.com" target="_blank" rel="noopener">BigDataCloud</a> ·
+            dernière mise à jour <span id="updated">—</span><br>
+            Projet indépendant. Informatif, sans valeur sanitaire officielle. Aucune donnée personnelle collectée.
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

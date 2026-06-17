@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment ça marche — ATMO</title>
+    <meta name="description" content="Comprendre l'indice européen de qualité de l'air (EAQI), les polluants suivis (PM2.5, NO₂, O₃…), l'indice UV, les pollens, et d'où viennent les données.">
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f5f1e8" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <!-- Applique le thème enregistré avant le premier rendu (évite le flash). -->
+    <script>(function(){try{var t=localStorage.getItem('atmo-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="comment-ca-marche.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <a class="logo" href="index.html">ATM<span>O</span></a>
+                <div class="tagline">— Comment ça marche</div>
+            </div>
+            <div class="meta">
+                <div class="meta-right">
+                    <a class="nav-link" href="index.html">← Retour à l'outil</a>
+                    <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème" title="Changer de thème">
+                        <span id="themeIcon" aria-hidden="true">☾</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero hiw-hero">
+            <h1>La qualité de l'air, <em>en clair.</em></h1>
+            <p>ATMO résume en un coup d'œil l'air que vous respirez : un <strong>indice unique</strong> de 0 à 100+,
+               le détail des polluants, l'indice UV et les pollens. Le tout en temps réel, près de chez vous,
+               sans compte ni publicité.</p>
+        </section>
+
+        <section class="stats" aria-label="Chiffres clés">
+            <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-lbl">niveaux d'indice</div></div>
+            <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-lbl">polluants suivis</div></div>
+            <div class="stat"><div class="stat-num" data-count="3">0</div><div class="stat-lbl">jours de prévision</div></div>
+            <div class="stat"><div class="stat-num">0</div><div class="stat-lbl">clé API requise</div></div>
+        </section>
+
+        <p class="flow-intro">Tout ce qu'il faut savoir <span class="arrow">↓</span></p>
+
+        <ol class="pipeline">
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">01</span><h2>Un indice unique, six niveaux</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>ATMO affiche l'<strong>indice européen de qualité de l'air</strong> (EAQI), une note de
+                           <code>0</code> à <code>100+</code> calculée à partir des principaux polluants. Plus l'indice
+                           est bas, plus l'air est sain.</p>
+                        <p>Six paliers — de <em>Bon</em> à <em>Extrêmement mauvais</em> — traduisent l'indice en un
+                           message simple : peut-on sortir, aérer, faire du sport ?</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="aqi-scale" aria-hidden="true">
+                            <div class="aqi-seg" data-band="good"><b>Bon</b><span class="rng">0–20</span></div>
+                            <div class="aqi-seg" data-band="fair"><b>Moyen</b><span class="rng">20–40</span></div>
+                            <div class="aqi-seg" data-band="moderate"><b>Dégradé</b><span class="rng">40–60</span></div>
+                            <div class="aqi-seg" data-band="poor"><b>Mauvais</b><span class="rng">60–80</span></div>
+                            <div class="aqi-seg" data-band="verypoor"><b>Très mauvais</b><span class="rng">80–100</span></div>
+                            <div class="aqi-seg" data-band="extreme"><b>Extrême</b><span class="rng">100+</span></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">02</span><h2>Les polluants, et lequel domine</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>L'indice global suit six polluants : particules fines <code>PM2.5</code> et <code>PM10</code>,
+                           dioxyde d'azote <code>NO₂</code>, ozone <code>O₃</code>, dioxyde de soufre <code>SO₂</code> et
+                           monoxyde de carbone <code>CO</code>.</p>
+                        <p>ATMO met en avant le <strong>polluant dominant</strong> — celui dont le sous-indice est le plus
+                           élevé, donc celui qui « porte » la note du moment.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">PM2.5 · particules fines</span>
+                            <span class="vchip">PM10 · particules</span>
+                            <span class="vchip">NO₂ · trafic</span>
+                            <span class="vchip">O₃ · ozone</span>
+                            <span class="vchip">SO₂ · industrie</span>
+                            <span class="vchip">CO</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">03</span><h2>UV & pollens</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>En prime : l'<strong>indice UV</strong> du moment et le pic de la journée (échelle OMS, de
+                           <em>Faible</em> à <em>Extrême</em>), avec le bon réflexe de protection.</p>
+                        <p>Et le <strong>risque pollen</strong> du jour — graminées, bouleau, ambroisie… — affiché
+                           uniquement là où la donnée existe (Europe, en saison).</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">☀ Indice UV + pic du jour</span>
+                            <span class="vchip">🌾 Graminées</span>
+                            <span class="vchip">🌳 Bouleau, aulne, olivier</span>
+                            <span class="vchip">🤧 Armoise, ambroisie</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">04</span><h2>Hier, maintenant, demain</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>ATMO ne montre pas qu'un instantané : une <strong>tendance des dernières 48 h</strong> indique
+                           si l'air <em>s'améliore</em> ou <em>se dégrade</em>, et une <strong>prévision horaire sur 3 jours</strong>
+                           anticipe les pics (souvent l'ozone en après-midi).</p>
+                        <p>Une carte <strong>météo &amp; vent</strong> donne le contexte : un vent faible laisse les polluants
+                           stagner, un vent soutenu les disperse.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="vchips">
+                            <span class="vchip">📉 Tendance 48 h</span>
+                            <span class="vchip">🗓️ Prévision 3 jours</span>
+                            <span class="vchip">🌬️ Vent &amp; dispersion</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">05</span><h2>D'où viennent les données</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>La qualité de l'air vient de l'API publique <code>open-meteo.com</code>, adossée au service
+                           européen <strong>CAMS</strong> (Copernicus) ; la <strong>météo</strong> provient de la même source.
+                           Sans clé, sans compte.</p>
+                        <p>La recherche de ville et la localisation passent par Open-Meteo et BigDataCloud. Votre position
+                           sert <strong>uniquement</strong> à interroger l'API — elle n'est ni stockée, ni envoyée ailleurs.</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="badges">
+                            <span class="badge">Open-Meteo / CAMS</span>
+                            <span class="badge">Sans clé API</span>
+                            <span class="badge">Prévision 3 jours</span>
+                            <span class="badge">Mise à jour horaire</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="step card reveal">
+                <div class="step-head"><span class="step-num">06</span><h2>100 % dans votre navigateur</h2></div>
+                <div class="step-body">
+                    <div class="step-text">
+                        <p>Aucun serveur, aucune base de données, aucun traceur. Le site garde en cache la dernière
+                           mesure pour rester consultable <strong>même hors-ligne</strong>.</p>
+                        <p>Chaque ville a son <strong>lien partageable</strong> : l'adresse se met à jour toute seule,
+                           à mettre en favori ou à envoyer. Et ATMO est <em>informatif</em> — pour une alerte sanitaire
+                           officielle, référez-vous à votre AASQA régionale (Atmo France).</p>
+                    </div>
+                    <div class="step-visual">
+                        <div class="badges">
+                            <span class="badge">100% navigateur</span>
+                            <span class="badge">Hors-ligne (cache)</span>
+                            <span class="badge">🔗 Lien partageable</span>
+                            <span class="badge">Aucune donnée perso</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ol>
+
+        <section class="outro card reveal">
+            <h2>Et c'est tout — <em>côté navigateur.</em></h2>
+            <p>Pas de serveur, pas de dépendance, pas de données envoyées. Juste du HTML, du CSS et du JavaScript,
+               déployable tel quel sur GitHub&nbsp;Pages.</p>
+            <a class="cta" href="index.html">Voir la qualité de l'air →</a>
+        </section>
+
+        <footer>
+            Projet indépendant · données : <a href="https://open-meteo.com" target="_blank" rel="noopener">open-meteo.com</a> (CAMS).
+        </footer>
+    </div>
+
+    <script>
+    (function () {
+        var icon = document.getElementById('themeIcon');
+        function apply(t) {
+            if (t === 'light') { document.documentElement.setAttribute('data-theme', 'light'); icon.textContent = '☀'; }
+            else { document.documentElement.removeAttribute('data-theme'); icon.textContent = '☾'; }
+        }
+        apply(localStorage.getItem('atmo-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'));
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            var next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            localStorage.setItem('atmo-theme', next); apply(next);
+        });
+
+        var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var reveals = document.querySelectorAll('.reveal');
+        if (reduce || !('IntersectionObserver' in window)) {
+            reveals.forEach(function (el) { el.classList.add('in'); });
+        } else {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { threshold: 0.18 });
+            reveals.forEach(function (el) { io.observe(el); });
+        }
+
+        var nums = document.querySelectorAll('.stat-num[data-count]');
+        function countUp(el) {
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            if (reduce) { el.textContent = target.toLocaleString('fr-FR'); return; }
+            var start = null, dur = 1100;
+            function tick(ts) {
+                if (start === null) start = ts;
+                var p = Math.min(1, (ts - start) / dur);
+                var eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.round(target * eased).toLocaleString('fr-FR');
+                if (p < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+        if (!('IntersectionObserver' in window)) {
+            nums.forEach(countUp);
+        } else {
+            var io2 = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); io2.unobserve(e.target); } });
+            }, { threshold: 0.6 });
+            nums.forEach(function (el) { io2.observe(el); });
+        }
+    })();
+    </script>
+</body>
+</html>
